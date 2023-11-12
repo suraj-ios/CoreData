@@ -20,11 +20,50 @@ class ViewController: UIViewController {
         
         self.title = "CoreData Demo"
                 
-        self.getAllItem()
+        //self.getAllItemOneToOne()
 
+        self.getAllItemOneToMany()
+        
     }
     
-    func getAllItem(){
+    func getAllItemOneToMany(){
+        do{
+            arrayList = try context.fetch(CDPerson.fetchRequest())
+        }
+        catch let error{
+            //
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    func createOneToManyItem(){
+        let cdFriends = CDFriend(context: context)
+        cdFriends.firstName = "Friend First Name"
+        cdFriends.lastName = "Friend Last Name"
+        
+        let cdFriends2 = CDFriend(context: context)
+        cdFriends2.firstName = "Friend 2First Name"
+        cdFriends2.lastName = "Friend 2Last Name"
+        
+        let cdPerson = CDPerson(context: context)
+        cdPerson.firstName = "Person 1st Name"
+        cdPerson.lastName = "Person last Name"
+        
+        cdPerson.addToToFriend(cdFriends)
+        cdPerson.addToToFriend(cdFriends2)
+        
+        do{
+            try context.save()
+            
+            self.getAllItemOneToMany()
+        }
+        catch let error{
+            //
+        }
+    }
+    
+    func getAllItemOneToOne(){
         
         do{
             arrayList = try context.fetch(CDPerson.fetchRequest())
@@ -47,7 +86,7 @@ class ViewController: UIViewController {
         
         do{
             try context.save()
-            self.getAllItem()
+            self.getAllItemOneToOne()
             
         }catch let error{
             //
@@ -60,7 +99,7 @@ class ViewController: UIViewController {
         do{
             try context.save()
             
-            self.getAllItem()
+            self.getAllItemOneToOne()
         }
         catch let error{
             //
@@ -68,7 +107,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func createToDoListAction(_ sender: Any) {
-        self.createPersonMobileList()
+        //self.createPersonMobileList()
+        self.createOneToManyItem()
     }
 }
 

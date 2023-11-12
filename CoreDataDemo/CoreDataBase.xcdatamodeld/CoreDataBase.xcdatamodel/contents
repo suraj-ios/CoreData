@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDFriend" representedClassName="CDFriend" syncable="YES">
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <relationship name="toPerson" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPerson" inverseName="toFriend" inverseEntity="CDPerson"/>
+    </entity>
     <entity name="CDMobile" representedClassName="CDMobile" syncable="YES">
         <attribute name="brand" optional="YES" attributeType="String"/>
         <attribute name="number" optional="YES" attributeType="String"/>
@@ -9,6 +14,7 @@
     <entity name="CDPerson" representedClassName="CDPerson" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
+        <relationship name="toFriend" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDFriend" inverseName="toPerson" inverseEntity="CDFriend"/>
         <relationship name="toMobile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDMobile" inverseName="toPerson" inverseEntity="CDMobile"/>
     </entity>
 </model>
