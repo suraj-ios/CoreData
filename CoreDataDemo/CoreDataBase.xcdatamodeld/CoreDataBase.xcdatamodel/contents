@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier=""/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDClass" representedClassName="CDClass" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="toCDStudent" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDStudent"/>
+        <relationship name="toCDTeacher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTeacher"/>
+    </entity>
+    <entity name="CDStudent" representedClassName="CDStudent" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="toCDClass" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDClass"/>
+    </entity>
+    <entity name="CDTeacher" representedClassName="CDTeacher" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="toCDClass" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDClass"/>
+    </entity>
+</model>

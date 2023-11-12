@@ -22,6 +22,9 @@ class ViewController: UIViewController {
                 
         self.getAllToDoItem()
         
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        print(paths[0])
+        
     }
     
     func getAllToDoItem(){
