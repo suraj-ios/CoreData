@@ -11,9 +11,11 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
-        
-    var arrayList = [CDPerson]()
     
+    var arrayList = [CDClass]()
+
+    var arrayTeacherList = [CDTeacher]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -21,14 +23,25 @@ class ViewController: UIViewController {
         self.title = "CoreData Demo"
                 
         //self.getAllItemOneToOne()
-
+        
         self.getAllItemOneToMany()
         
     }
     
+    func getAllItemOneToOne(){
+        do{
+            arrayList = try context.fetch(CDClass.fetchRequest())
+        }
+        catch let error{
+            printContent(error.localizedDescription)
+        }
+        self.tableView.reloadData()
+
+    }
+    
     func getAllItemOneToMany(){
         do{
-            arrayList = try context.fetch(CDPerson.fetchRequest())
+            arrayTeacherList = try context.fetch(CDTeacher.fetchRequest())
         }
         catch let error{
             //
@@ -36,93 +49,62 @@ class ViewController: UIViewController {
         
         self.tableView.reloadData()
     }
-    
+   
     func createOneToManyItem(){
-        let cdFriends = CDFriend(context: context)
-        cdFriends.firstName = "Friend First Name"
-        cdFriends.lastName = "Friend Last Name"
+        let cdStudent = CDStudent(context: context)
+        cdStudent.name = "Student Name"
         
-        let cdFriends2 = CDFriend(context: context)
-        cdFriends2.firstName = "Friend 2First Name"
-        cdFriends2.lastName = "Friend 2Last Name"
-        
-        let cdPerson = CDPerson(context: context)
-        cdPerson.firstName = "Person 1st Name"
-        cdPerson.lastName = "Person last Name"
-        
-        cdPerson.addToToFriend(cdFriends)
-        cdPerson.addToToFriend(cdFriends2)
+        let cdClass = CDTeacher(context: context)
+        cdClass.name = "User"
+        cdClass.student = cdStudent
         
         do{
             try context.save()
-            
-            self.getAllItemOneToMany()
         }
         catch let error{
             //
         }
+        self.getAllItemOneToMany()
     }
     
-    func getAllItemOneToOne(){
-        
-        do{
-            arrayList = try context.fetch(CDPerson.fetchRequest())
-        }
-        catch let error{
-            //
-        }
-        self.tableView.reloadData()
-    }
     func createPersonMobileList(){
-        let cdMobile = CDMobile(context: context)
-        cdMobile.brand = "Apple"
-        cdMobile.number = "9007126725"
-        cdMobile.version = "16.0"
-        
-        let cdPerson = CDPerson(context: context)
-        cdPerson.firstName = "Suraj"
-        cdPerson.lastName = "Kumar"
-        cdPerson.toMobile = cdMobile
-        
-        do{
-            try context.save()
-            self.getAllItemOneToOne()
-            
-        }catch let error{
-            //
-        }
+       
         
     }
     
-    func deleteRecord(cdPerson:CDPerson){
+    func deleteRecord(cdPerson:CDClass){
         context.delete(cdPerson)
+        
         do{
             try context.save()
-            
-            self.getAllItemOneToOne()
         }
         catch let error{
             //
         }
+        
+        self.getAllItemOneToOne()
     }
     
     @IBAction func createToDoListAction(_ sender: Any) {
-        //self.createPersonMobileList()
         self.createOneToManyItem()
     }
+    
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arrayList.count
+        return self.arrayTeacherList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CoreDataTableViewCell", for: indexPath) as! CoreDataTableViewCell
         
         cell.delegate = self
         
-        let item = self.arrayList[indexPath.row]
-        cell.lblTitle.text = item.firstName! + " " + item.lastName!
+        let item = self.arrayTeacherList[indexPath.row]
+        let student = item.student
+
+        let str:String = (student?.name)!
+        cell.lblTitle.text = item.name! + " : " + str
         cell.deleteButton.tag = indexPath.row
         
         return cell
@@ -135,8 +117,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension ViewController: CoreDataTableViewCellDelegate{
     func deleteToDoItem(indexNumber: Int) {
-        let cdPerson = arrayList[indexNumber]
-        self.deleteRecord(cdPerson: cdPerson)
+        let cdPerson = arrayTeacherList[indexNumber]
+        //self.deleteRecord(cdPerson: cdPerson)
         self.tableView.reloadData()
     }
     

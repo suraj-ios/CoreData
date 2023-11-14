@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDClass" representedClassName="CDClass" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="student" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDStudent" inverseName="classes" inverseEntity="CDStudent"/>
+    </entity>
+    <entity name="CDStudent" representedClassName="CDStudent" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="classes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDClass" inverseName="student" inverseEntity="CDClass"/>
+        <relationship name="teacher" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTeacher" inverseName="student" inverseEntity="CDTeacher"/>
+    </entity>
+    <entity name="CDTeacher" representedClassName="CDTeacher" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="student" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDStudent" inverseName="teacher" inverseEntity="CDStudent"/>
+    </entity>
+</model>
